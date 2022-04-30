@@ -1,0 +1,30 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/xinpengliu/Desktop/Code/CSC331H/ReportStyleAnalyzer/AVL.cpp
+AVL.h
+/Users/xinpengliu/Desktop/Code/CSC331H/ReportStyleAnalyzer/AVL.h
+
+/Users/xinpengliu/Desktop/Code/CSC331H/ReportStyleAnalyzer/AVL.h
+iostream
+-
+deque
+-
+iomanip
+-
+cmath
+-
+iterator
+-
+
+/Users/xinpengliu/Desktop/Code/CSC331H/ReportStyleAnalyzer/main.cpp
+iostream
+-
+AVL.cpp
+/Users/xinpengliu/Desktop/Code/CSC331H/ReportStyleAnalyzer/AVL.cpp
+

@@ -1,0 +1,14 @@
+//
+// Created by Xinpeng Liu on 4/30/22.
+//
+
+#ifndef REPORTSTYLEANALYZER_REPORTANALYZER_H
+#define REPORTSTYLEANALYZER_REPORTANALYZER_H
+
+
+class ReportAnalyzer {
+
+};
+
+
+#endif //REPORTSTYLEANALYZER_REPORTANALYZER_H
