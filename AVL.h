@@ -20,6 +20,7 @@ struct tnode
     xtype info;
     tnode<xtype> *left;
     tnode<xtype> *right;
+    int count;
 };
 
 template <class xtype>
@@ -50,6 +51,20 @@ public:
     void Delete( xtype item);
     void Delete( tnode<xtype> *&p, xtype item);
     void DeleteNode( tnode<xtype> *&p);
+
+    /**
+     * @Brief Function searches if an item is in the tree or not
+     * @Input The item to search
+     * @Output If the item in the tree, return TRUE. Otherwise, FALSE
+     */
+    bool searchItem(xtype item);
+
+    /**
+     * @Brief Function searches if an item is in the tree or not
+     * @Input The item to search and an integer reference (passed by user)
+     * which is used to record the count of the item
+     */
+    void getCount(xtype item, int& count);
 };
 
 

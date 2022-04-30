@@ -10,8 +10,29 @@ int main() {
     T.insert("ok");
     T.print();
 
+    T.insert("opera");
+    T.print();
+
     T.insert("why");
     T.print();
+
+    T.insert("water");
+    T.print();
+
+    T.insert("water");
+    T.print();
+
+    T.insert("wait");
+    T.print();
+
+    T.insert("7");
+    T.print();
+
+    cout << T.searchItem("5") << endl;
+
+    int count = 0;
+    T.getCount("watedr",count);
+    cout << "watedr: " << count << endl;
 
 
 

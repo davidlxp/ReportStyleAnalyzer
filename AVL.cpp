@@ -5,12 +5,13 @@
 #include "AVL.h"
 
 template <class xtype>
-void AVLtree<xtype> :: Delete( xtype item)
+void AVLtree<xtype>::Delete( xtype item)
 {
     Delete (root,item);
 }
+
 template <class xtype>
-void AVLtree<xtype> :: Delete( tnode<xtype> *&p, xtype item)
+void AVLtree<xtype>::Delete( tnode<xtype> *&p, xtype item)
 {
     if (p == NULL)
         cout<<"ITEM NOT IN TREE";
@@ -23,14 +24,12 @@ void AVLtree<xtype> :: Delete( tnode<xtype> *&p, xtype item)
         else
         {
             DeleteNode (p);
-
         }
-
-
     }
 }
+
 template <class xtype>
-void AVLtree<xtype> :: DeleteNode( tnode<xtype> *&p)
+void AVLtree<xtype>::DeleteNode( tnode<xtype> *&p)
 {
     tnode<xtype> *s =p;
 
@@ -61,24 +60,24 @@ void AVLtree<xtype> :: DeleteNode( tnode<xtype> *&p)
 }
 
 template <class xtype>
-AVLtree<xtype> :: AVLtree()
+AVLtree<xtype>::AVLtree()
 {
     root = NULL;
 }
 
 template <class xtype>
-AVLtree<xtype> :: ~AVLtree()
+AVLtree<xtype>::~AVLtree()
 {
     destroy (root);
 }
 template <class xtype>
-void AVLtree<xtype> :: destroy()
+void AVLtree<xtype>::destroy()
 {
     destroy (root);
 }
 
 template <class xtype>
-void AVLtree<xtype> :: destroy( tnode<xtype> * &p)
+void AVLtree<xtype>::destroy( tnode<xtype> * &p)
 {
     if ( p != NULL )
     {
@@ -90,7 +89,7 @@ void AVLtree<xtype> :: destroy( tnode<xtype> * &p)
 }
 
 template <class xtype>
-void AVLtree<xtype> :: copyAVL(tnode<xtype>* & troot, tnode<xtype> *croot)
+void AVLtree<xtype>::copyAVL(tnode<xtype>* & troot, tnode<xtype> *croot)
 {
     if ( croot == NULL )
         troot = NULL;
@@ -104,7 +103,7 @@ void AVLtree<xtype> :: copyAVL(tnode<xtype>* & troot, tnode<xtype> *croot)
 }
 
 template <class xtype>
-AVLtree<xtype> :: AVLtree(const AVLtree<xtype> & other)
+AVLtree<xtype>::AVLtree(const AVLtree<xtype> & other)
 {
     if ( other.root == NULL )
         root = NULL;
@@ -115,13 +114,13 @@ AVLtree<xtype> :: AVLtree(const AVLtree<xtype> & other)
 }
 
 template <class xtype>
-bool AVLtree<xtype> :: isEmpty()
+bool AVLtree<xtype>::isEmpty()
 {
     return root == NULL;
 }
 
 template <class xtype>
-void AVLtree<xtype>:: rotateLeft ( tnode<xtype> * &p)
+void AVLtree<xtype>::rotateLeft ( tnode<xtype> * &p)
 {
     // holds  right of p
     tnode<xtype> * q;
@@ -140,7 +139,7 @@ void AVLtree<xtype>:: rotateLeft ( tnode<xtype> * &p)
 }
 
 template <class xtype>
-void AVLtree<xtype>:: rotateRight ( tnode<xtype> * &p)
+void AVLtree<xtype>::rotateRight ( tnode<xtype> * &p)
 {
     // holds left of p
     tnode<xtype> * q;
@@ -159,7 +158,7 @@ void AVLtree<xtype>:: rotateRight ( tnode<xtype> * &p)
 }
 
 template <class xtype>
-void AVLtree<xtype> :: balanceLeft ( tnode<xtype> * &p)
+void AVLtree<xtype>::balanceLeft ( tnode<xtype> * &p)
 {
     tnode<xtype> *l;
     tnode<xtype> *r;
@@ -199,7 +198,7 @@ void AVLtree<xtype> :: balanceLeft ( tnode<xtype> * &p)
 }
 
 template <class xtype>
-void AVLtree<xtype> :: balanceRight ( tnode<xtype> * &p)
+void AVLtree<xtype>::balanceRight ( tnode<xtype> * &p)
 {
     tnode<xtype> *l;
     tnode<xtype> *r;
@@ -239,9 +238,9 @@ void AVLtree<xtype> :: balanceRight ( tnode<xtype> * &p)
 }
 
 template <class xtype>
-void AVLtree<xtype>:: insertNode (tnode<xtype> * &p, xtype item, bool &taller)
+void AVLtree<xtype>::insertNode (tnode<xtype> * &p, xtype item, bool &taller)
 {
-    if (p == NULL )
+    if (p == NULL )                                 // when adding a new item
     {
         p = new tnode<xtype>;
         p->info = item;
@@ -249,9 +248,12 @@ void AVLtree<xtype>:: insertNode (tnode<xtype> * &p, xtype item, bool &taller)
         p->right =NULL;
         p->balance = 0;
         taller = true;
+        p->count = 1;
     }
-    else if ( p->info == item )
-        cout<<"ERROR NO DUPLICATES";
+    else if ( p->info == item )                     // when the item already exist
+    {
+        p->count = p->count + 1;
+    }
     else if ( p->info > item)
     {
         insertNode (p->left,item,taller);
@@ -295,11 +297,48 @@ void AVLtree<xtype>:: insertNode (tnode<xtype> * &p, xtype item, bool &taller)
 }
 
 template <class xtype>
-void AVLtree<xtype> :: insert (xtype item )
+void AVLtree<xtype>::insert (xtype item )
 {
     bool taller = false;
     insertNode (root,item,taller);
 }
+
+template <class xtype>
+bool AVLtree<xtype>::searchItem(xtype item)
+{
+    tnode<xtype>* p = root;
+    while (p != nullptr)
+    {
+        if (p->info == item)
+            return true;
+        else if (item < p->info)
+            p = p->left;
+        else
+            p = p->right;
+    }
+    return false;
+}
+
+template <class xtype>
+void AVLtree<xtype>::getCount(xtype item, int& count)
+{
+    if (searchItem(item))
+    {
+        tnode<xtype>* p = root;
+        while (p->info != item)
+        {
+            if (item < p->info)
+                p = p->left;
+            else
+                p = p->right;
+        }
+        count = p->count;
+    }
+}
+
+
+
+
 
 template <class xtype>
 int AVLtree<xtype> :: maxH(tnode<xtype> *p)
