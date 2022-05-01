@@ -22,8 +22,18 @@ cmath
 iterator
 -
 
-/Users/xinpengliu/Desktop/Code/CSC331H/ReportStyleAnalyzer/main.cpp
+/Users/xinpengliu/Desktop/Code/CSC331H/ReportStyleAnalyzer/ReportAnalyzer.cpp
+ReportAnalyzer.h
+/Users/xinpengliu/Desktop/Code/CSC331H/ReportStyleAnalyzer/ReportAnalyzer.h
+
+/Users/xinpengliu/Desktop/Code/CSC331H/ReportStyleAnalyzer/ReportAnalyzer.h
 iostream
+-
+fstream
+-
+vector
+-
+unordered_map
 -
 AVL.cpp
 /Users/xinpengliu/Desktop/Code/CSC331H/ReportStyleAnalyzer/AVL.cpp

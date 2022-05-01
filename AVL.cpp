@@ -320,7 +320,7 @@ bool AVLtree<xtype>::searchItem(xtype item)
 }
 
 template <class xtype>
-void AVLtree<xtype>::getCount(xtype item, int& count)
+int AVLtree<xtype>::getCount(xtype item)
 {
     if (searchItem(item))
     {
@@ -332,9 +332,23 @@ void AVLtree<xtype>::getCount(xtype item, int& count)
             else
                 p = p->right;
         }
-        count = p->count;
+        return p->count;
     }
+    else
+        return 0;
 }
+
+template <class xtype>
+tnode<xtype>* AVLtree<xtype>::iterator() const
+{
+    return root;
+}
+
+
+
+
+
+
 
 
 

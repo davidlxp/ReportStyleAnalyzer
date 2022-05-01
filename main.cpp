@@ -1,38 +1,26 @@
 #include <iostream>
-#include "AVL.cpp"
+#include <vector>
+
+#include "ReportAnalyzer.h"
 
 int main() {
 
-    AVLtree<string> T;
-    T.insert("hello");
-    T.print();
+    ReportAnalyzer A;
 
-    T.insert("ok");
-    T.print();
+    string fileAddress = "../chapter.txt";                        // the fileAddress
+    string text = A.readTextFile(fileAddress);   // read all contents from the text file
 
-    T.insert("opera");
-    T.print();
+//    cout << text << endl;
 
-    T.insert("why");
-    T.print();
 
-    T.insert("water");
-    T.print();
 
-    T.insert("water");
-    T.print();
+    A.analyzeReport(fileAddress);
 
-    T.insert("wait");
-    T.print();
 
-    T.insert("7");
-    T.print();
 
-    cout << T.searchItem("5") << endl;
 
-    int count = 0;
-    T.getCount("watedr",count);
-    cout << "watedr: " << count << endl;
+
+
 
 
 

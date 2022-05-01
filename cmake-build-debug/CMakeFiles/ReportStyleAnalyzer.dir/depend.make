@@ -5,9 +5,12 @@ CMakeFiles/ReportStyleAnalyzer.dir/AVL.cpp.o: \
  ../AVL.cpp \
  ../AVL.h
 CMakeFiles/ReportStyleAnalyzer.dir/ReportAnalyzer.cpp.o: \
+ ../AVL.cpp \
+ ../AVL.h \
  ../ReportAnalyzer.cpp \
  ../ReportAnalyzer.h
 CMakeFiles/ReportStyleAnalyzer.dir/main.cpp.o: \
  ../AVL.cpp \
  ../AVL.h \
+ ../ReportAnalyzer.h \
  ../main.cpp

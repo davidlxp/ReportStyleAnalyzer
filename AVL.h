@@ -60,11 +60,18 @@ public:
     bool searchItem(xtype item);
 
     /**
-     * @Brief Function searches if an item is in the tree or not
-     * @Input The item to search and an integer reference (passed by user)
-     * which is used to record the count of the item
+     * @Brief Function returns the count of an item in the tree
+     * @Input If the item is not in the tree, it returns 0. Otherwise,
+     * it print the "count" of the item in the tree
      */
-    void getCount(xtype item, int& count);
+    int getCount(xtype item);
+
+    /**
+     * @Brief Function returns an iterator of the tree.
+     * @Output A pointer points to the root of the tree
+     */
+    tnode<xtype>* iterator() const;
+
 };
 
 
