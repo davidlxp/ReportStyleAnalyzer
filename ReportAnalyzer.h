@@ -1,6 +1,8 @@
-//
-// Created by Xinpeng Liu on 4/30/22.
-//
+/**************************************************************************************/
+/* Programmer: Xinpeng Liu                                                            */
+/* Date: May 1, 2022                                                                  */
+/* Purpose:  An class for analyzing text file and issue style warning using AVL tree  */
+/**************************************************************************************/
 
 #ifndef REPORTSTYLEANALYZER_REPORTANALYZER_H
 #define REPORTSTYLEANALYZER_REPORTANALYZER_H
@@ -14,9 +16,18 @@
 using namespace std;
 
 class ReportAnalyzer {
+public:
+
+    /**
+     * @Brief Function analyze a report and provide result in a text file
+     * @Input "fileAddress" is the address of input file. "analysisResultPath"
+     * is the address for storing the analysis result
+     */
+    void analyzeReport(string fileAddress, string analysisResultPath);
+
 private:
     // a vector of special symbols to be removed from string, so only words left in the string
-    vector<string> symbolToRemove { ",", "!", "?", ".", "\"", ";", ":", "-", " '", "' "};
+    vector<string> symbolToRemove { ",", "!", "?", ".", "\"", ";", ":", " - ", " '", "' "};
 
     // a vector of symbols which represents the ending of a sentence
     vector<string> sentenceEndSymbol {".", "!", "?"};
@@ -29,8 +40,6 @@ private:
 
     // the threshold for identifying if the average length of words is too long
     int barWordTooLong = 5;
-
-public:
 
     /**
      * @Brief Function read a text file and save the content to a string
@@ -99,11 +108,6 @@ public:
     void insertWordsToTree(vector<string>& words, AVLtree<string>& tree);
 
     /**
-     * @Brief Function analyze a report and provide a printed result
-     */
-    void analyzeReport(string fileAddress);
-
-    /**
      * @Brief A utility function for printing a vector
      */
     void printVector(const vector<string>& vec);
@@ -160,6 +164,20 @@ public:
      */
     void getWordsUsedTooOften(tnode<string>*& I, vector<string>& wordsTooOften, int& moreThan3LetterNum);
 
+
+    /**
+     * @Brief Helper functions for get statistical summary, style warnings, and words by index
+     */
+    string getStatsSummary(int& wordsNum, int& uniWordsNum, int& uniMoreThan3LettersNum,
+                           int& avgWordLen, int& avgSentenceLen);
+    string getStyleWarnings(vector<string>& wordsTooOften, bool sentenceTooLong, bool wordTooLong,
+                            int& avgSentenceLen, int& avgWordLen);
+    string getindexUniWords(unordered_map<char, string> indexMap);
+
+    /**
+     * @Brief Function loads a string into a local text file
+     */
+    void loadContentToFile(string& filePath, string& content);
 
 };
 

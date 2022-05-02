@@ -1,6 +1,8 @@
-//
-// Created by Xinpeng Liu on 4/30/22.
-//
+/************************************************************************/
+/* Programmer: Xinpeng Liu                                              */
+/* Date: May 1, 2022                                                    */
+/* Purpose:  The implementation of ReportAnalysis class                 */
+/************************************************************************/
 
 #include "ReportAnalyzer.h"
 
@@ -236,8 +238,83 @@ void ReportAnalyzer::getWordsUsedTooOften(tnode<string>*& I, vector<string>& wor
     }
 }
 
-void ReportAnalyzer::analyzeReport(string fileAddress)
+string ReportAnalyzer::getStatsSummary(int& wordsNum, int& uniWordsNum, int& uniMoreThan3LettersNum,
+                                       int& avgWordLen, int& avgSentenceLen)
 {
+    string statsSummary;
+
+    /* get the statistical summary */
+    statsSummary = "<*>------ STATISTICAL SUMMARY ------<*>\n\n";
+    statsSummary.append("TOTAL NUMBER OF WORDS: " + to_string(wordsNum) + "\n"
+                        + "TOTAL NUMBER OF “UNIQUE” WORDS: " + to_string(uniWordsNum) + "\n"
+                        + "TOTAL NUMBER OF “UNIQUE” WORDS OF MORE THAN THREE LETTERS: " + to_string(uniMoreThan3LettersNum) + "\n"
+                        + "AVERAGE WORD LENGTH: " + to_string(avgWordLen) + " characters" + "\n"
+                        + "AVERAGE SENTENCE LENGTH: " + to_string(avgSentenceLen) + " words" + "\n");
+
+    return statsSummary;
+}
+
+string ReportAnalyzer::getStyleWarnings(vector<string>& wordsTooOften, bool sentenceTooLong, bool wordTooLong,
+                                      int& avgSentenceLen, int& avgWordLen)
+{
+    string styleWarnings;                                   // style warnings
+
+    /* get the style warning */
+    styleWarnings = "<*>------ STYLE WARNINGS ------<*>\n\n";
+    string styleBegin = styleWarnings;
+
+    if (!wordsTooOften.empty())                              // style warning on "words used too often"
+    {
+        styleWarnings.append("WORDS USED TOO OFTEN:\n");
+
+        for (int i=0; i<wordsTooOften.size(); ++i)
+            styleWarnings.append(to_string(i+1)).append(". ").append(wordsTooOften[i]).append("\n");
+    }
+
+    if (sentenceTooLong)                                     // style warning on "sentences avg length is too long"
+        styleWarnings.append("AVERAGE SENTENCE LENGTH TOO LONG – " + to_string(avgSentenceLen) + "\n");
+
+    if (wordTooLong)                                         // style warning on "words avg length is too long"
+        styleWarnings.append("AVERAGE WORD LENGTH TOO LONG – " + to_string(avgWordLen) + "\n");
+
+    if (styleWarnings == styleBegin)
+        styleWarnings.append("The style in your file is great! No warning generated.");
+
+    return styleWarnings;
+}
+
+string ReportAnalyzer::getindexUniWords(unordered_map<char, string> indexMap)
+{
+    string indexUniWords;                                   // unique words by index
+
+    /* get the words and their index */
+    indexUniWords = "<*>------ INDEX OF UNIQUE WORDS ------<*>\n\n";
+    for (char x='a'; x<='z'; x++)
+    {
+        if (indexMap.find(x) != indexMap.end())
+        {
+            indexUniWords.append("[");
+            indexUniWords.push_back(toupper(x));
+            indexUniWords.append("]");
+            indexUniWords.append("\n");
+            indexUniWords.append(indexMap[x]);
+            indexUniWords.append("\n");
+        }
+    }
+
+    return indexUniWords;
+}
+
+void ReportAnalyzer::loadContentToFile(string& filePath, string& content)
+{
+    ofstream file(filePath);                                 // create file if it's not there
+    file << content;                                         // write the content into the file
+    file.close();                                            // close the file
+}
+
+void ReportAnalyzer::analyzeReport(string fileAddress, string analysisResultPath)
+{
+    /* variables related to the analysis */
     AVLtree<string> T;                                      // a tree for storing words for better searching
     int wordsNum;                                           // total number of words
     int uniWordsNum;                                        // number of unique words
@@ -251,20 +328,20 @@ void ReportAnalyzer::analyzeReport(string fileAddress)
     int moreThan3LetterNum;                                 // total number of words that more than three letters
     vector<string> wordsTooOften;                           // vector contains words that are used too often
 
+    /* String of analysis results */
     string statsSummary;                                    // statistical summary
     string styleWarnings;                                   // style warnings
     string indexUniWords;                                   // unique words by index
     string allSummary;                                      // summary of all 3 sections above
 
+    /* read words from file and store them in tree */
     string text = readTextFile(fileAddress);             // read all contents from the text file
     vector<string> words = extractCleanWords(text);    // extract unique words from the text string
     vector<string> sentences = extractSentence(text);  // extract sentences from the text file
     insertWordsToTree(words, T);                     // put all words into a tree
+    tnode<string>* I = T.iterator();                        // an iterator of the tree
 
-    printVector(sentences);
-    T.print();
-
-    tnode<string>* I = T.iterator();                        // using iterator to get words information from tree
+    /* Use iterator to get words information from tree */
     wordsNum = getWordsNum(I);
     uniWordsNum = getUniWordsNum(I);
     uniMoreThan3LettersNum = getUniMoreThan3LettersNum(I);
@@ -273,64 +350,25 @@ void ReportAnalyzer::analyzeReport(string fileAddress)
     moreThan3LetterNum = getMoreThan3LettersNum(I);
     getWordsUsedTooOften(I, wordsTooOften, moreThan3LetterNum);
 
-    avgWordLen = totalWordsLength / wordsNum;               // calculate derived statistics
+    /* Calculate derived statistics */
+    avgWordLen = totalWordsLength / wordsNum;
     avgSentenceLen = wordsNum / sentences.size();
     wordTooLong = avgWordLen > barWordTooLong;
     sentenceTooLong = avgSentenceLen > barSentenceTooLong;
 
-    /* get the statistical summary */
-    statsSummary = "<*>------ STATISTICAL SUMMARY ------<*>\n\n";
-    statsSummary.append("TOTAL NUMBER OF WORDS: " + to_string(wordsNum) + "\n"
-                        + "TOTAL NUMBER OF “UNIQUE” WORDS: " + to_string(uniWordsNum) + "\n"
-                        + "TOTAL NUMBER OF “UNIQUE” WORDS OF MORE THAN THREE LETTERS: " + to_string(uniMoreThan3LettersNum) + "\n"
-                        + "AVERAGE WORD LENGTH: " + to_string(avgWordLen) + " characters" + "\n"
-                        + "AVERAGE SENTENCE LENGTH: " + to_string(avgSentenceLen) + " words" + "\n");
+    /* Get analysis results by section */
+    statsSummary = getStatsSummary(wordsNum, uniWordsNum, uniMoreThan3LettersNum, avgWordLen, avgSentenceLen);
+    styleWarnings = getStyleWarnings(wordsTooOften, sentenceTooLong, wordTooLong, avgSentenceLen, avgWordLen);
+    indexUniWords = getindexUniWords(map);
 
-    /* get the style warning */
-    styleWarnings = "<*>------ STYLE WARNINGS ------<*>\n\n";
-    string styleBegin = styleWarnings;
+    /* Put together all the analysis results */
+    allSummary = "\nFILE NAME: " + fileAddress + "\n\n" + statsSummary + "\n\n" + styleWarnings + "\n\n" + indexUniWords;
 
-    if (!wordsTooOften.empty())                              // style warning on "words used too often"
-    {
-        styleWarnings.append("WORDS USED TOO OFTEN:\n");
+    /* Write the analysis result to a file */
+    loadContentToFile(analysisResultPath, allSummary);
 
-        for (int i=0; i<wordsTooOften.size(); ++i)
-            styleWarnings.append(to_string(i+1)).append(". ").append(wordsTooOften[i]).append("\n");
-        styleWarnings.append("\n");
-    }
-
-    if (sentenceTooLong)                                     // style warning on "sentences avg length is too long"
-        styleWarnings.append("AVERAGE SENTENCE LENGTH TOO LONG – " + to_string(avgSentenceLen) + "\n");
-
-    if (wordTooLong)                                         // style warning on "words avg length is too long"
-        styleWarnings.append("AVERAGE WORD LENGTH TOO LONG – " + to_string(avgWordLen) + "\n");
-
-    if (styleWarnings == styleBegin)
-        styleWarnings.append("The style in your file is great! No warning generated.");
-
-
-    /* get the words and their index */
-    indexUniWords = "<*>------ INDEX OF UNIQUE WORDS ------<*>\n\n";
-    for (char x='a'; x<='z'; x++)
-    {
-        if (map.find(x) != map.end())
-        {
-            indexUniWords.append("[");
-            indexUniWords.push_back(toupper(x));
-            indexUniWords.append("]");
-            indexUniWords.append("\n");
-            indexUniWords.append(map[x]);
-            indexUniWords.append("\n");
-        }
-    }
-
-
-    /* put together all the analysis results */
-    allSummary = statsSummary + "\n\n" + styleWarnings + "\n\n" + indexUniWords;
-
-
-    cout << allSummary << endl;
 }
+
 
 
 

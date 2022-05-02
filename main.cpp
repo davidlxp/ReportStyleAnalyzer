@@ -1,95 +1,52 @@
+/*********************************************************************/
+/* Programmer: Xinpeng Liu                                           */
+/* Date: March 28, 2022                                              */
+/* Purpose: Section for testing the ReportAnalyzer program           */
+/*********************************************************************/
+
+
 #include <iostream>
 #include <vector>
-
 #include "ReportAnalyzer.h"
 
-int main() {
+int printMenu();
+void runProgram();
+string readInputAddress();
+string readOutputAddress();
+
+int main()
+{
+    cout << "\nWelcome to the File Analyzer!";
+    cout << "\nIf you provide me a text file, I could provide you feedback and style warning." << endl;
+    cout << "\n";
+
+    string inputAddress = readInputAddress();
+    string outputAddress = readOutputAddress();
+
+    inputAddress = "../" + inputAddress;
+    outputAddress = "../" + outputAddress;
 
     ReportAnalyzer A;
-
-    string fileAddress = "../chapter.txt";                        // the fileAddress
-    string text = A.readTextFile(fileAddress);   // read all contents from the text file
-
-//    cout << text << endl;
-
-
-
-    A.analyzeReport(fileAddress);
-
-
-
-
-
-
-
-
-
-//    AVLtree<int> T;
-//
-//    T.insert(4);
-//    T.print();
-//
-//    T.insert(6);
-//    T.print();
-//
-//    T.insert(10);
-//    T.print();
-//
-//    T.insert(12);
-//    T.print();
-//
-//    T.insert(14);
-//    T.print();
-//
-//    T.insert(11);
-//    T.print();
-//
-//    T.insert(18);
-//    T.print();
-//
-//    T.insert(30);
-//    T.print();
-//
-//    T.insert(13);
-//    T.print();
-//
-//    T.destroy();
-//
-//    T.insert(100);
-//    T.print();
-//
-//    T.insert(80);
-//    T.print();
-//
-//    T.insert(60);
-//    T.print();
-//
-//    T.insert(40);
-//    T.print();
-//
-//    T.insert(20);
-//    T.print();
-//
-//    T.insert(50);
-//    T.print();
-//
-//    T.insert(55);
-//    T.print();
-//
-//    T.insert(130);
-//    T.print();
-//
-//    T.Delete(60);
-//    T.print();
-//
-//    T.Delete(50);
-//    T.print();
-//
-//    T.Delete(20);
-//    T.print();
-//
-//    T.Delete(40);
-//    T.print();
+    A.analyzeReport(inputAddress, outputAddress);
+    cout << "Please see '" << outputAddress << "' for analysis result " << endl;
 
     return 0;
+}
+
+string readInputAddress()
+{
+    cout << "Please Provide Input File Path (eg. sample2.txt): ";
+    string inputFileAddress;
+    getline(cin, inputFileAddress);
+
+    return inputFileAddress;
+}
+
+string readOutputAddress()
+{
+    cout << "Please Provide File Path For Storing Analysis Result (eg. analysis.txt): ";
+    string outputFileAddress;
+    getline(cin, outputFileAddress);
+
+    return outputFileAddress;
 }
