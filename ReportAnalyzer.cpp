@@ -6,7 +6,7 @@
 
 #include "ReportAnalyzer.h"
 
-string ReportAnalyzer::readTextFile(string& fileAddress)
+string ReportAnalyzer::readTextFile(string& fileAddress) const
 {
     string text;                                                        // final text to be returned
 
@@ -26,7 +26,7 @@ string ReportAnalyzer::readTextFile(string& fileAddress)
     return text;
 }
 
-void ReportAnalyzer::lowerString(string& text)
+void ReportAnalyzer::lowerString(string& text) const
 {
     string lowerText;
     for (char c : text)
@@ -34,7 +34,7 @@ void ReportAnalyzer::lowerString(string& text)
     text = lowerText;
 }
 
-vector<string> ReportAnalyzer::splitString(string strToSplit, string splitAt)
+vector<string> ReportAnalyzer::splitString(string strToSplit, string splitAt) const
 {
     vector<string> strPartList;
     int found;                                                          // index where the splitPoint reside
@@ -50,7 +50,7 @@ vector<string> ReportAnalyzer::splitString(string strToSplit, string splitAt)
     return strPartList;
 }
 
-string ReportAnalyzer::combineStrings(vector<string>& listOfString, string connectWith)
+string ReportAnalyzer::combineStrings(vector<string>& listOfString, string connectWith) const
 {
     string out;
 
@@ -63,19 +63,19 @@ string ReportAnalyzer::combineStrings(vector<string>& listOfString, string conne
     return out;
 }
 
-void ReportAnalyzer::removeSpecialSymbols(string& text)
+void ReportAnalyzer::removeSpecialSymbols(string& text) const
 {
     vector<string> tempVec;                                 // vector stores partial strings during removing process
 
     // remove all the symbols
-    for (string& s : symbolToRemove)
+    for (string s : symbolToRemove)
     {
         tempVec = ReportAnalyzer::splitString(text, s);
         text = ReportAnalyzer::combineStrings(tempVec," ");
     }
 }
 
-void ReportAnalyzer::removeExtraSpaces(string& text)
+void ReportAnalyzer::removeExtraSpaces(string& text) const
 {
     vector<string> tempVec;                                 // vector stores partial strings during removing process
     vector<string> finalVec;                                // vector after removing all the extra spaces
@@ -91,7 +91,7 @@ void ReportAnalyzer::removeExtraSpaces(string& text)
     text = combineStrings(finalVec, " ");
 }
 
-vector<string> ReportAnalyzer::extractCleanWords(string text)
+vector<string> ReportAnalyzer::extractCleanWords(string text) const
 {
     lowerString(text);                                   // lower case all the characters in the string
     removeSpecialSymbols(text);                          // remove all special symbols
@@ -100,7 +100,7 @@ vector<string> ReportAnalyzer::extractCleanWords(string text)
     return splitString(text, " ");          // convert cleaned string to a list of words
 }
 
-vector<string> ReportAnalyzer::extractSentence(string text)
+vector<string> ReportAnalyzer::extractSentence(string text) const
 {
     vector<string> vec;                                      // final vector which saves split sentence from text
     vec.push_back(text);                                     // initialize the vector
@@ -109,7 +109,7 @@ vector<string> ReportAnalyzer::extractSentence(string text)
     vector<string> t2;
 
     // 1. extracting the sentences
-    for (string& s : sentenceEndSymbol)
+    for (string s : sentenceEndSymbol)
     {
         for (string& sen : vec)
         {
@@ -140,19 +140,19 @@ vector<string> ReportAnalyzer::extractSentence(string text)
     return vec;
 }
 
-void ReportAnalyzer::insertWordsToTree(vector<string>& words, AVLtree<string>& tree)
+void ReportAnalyzer::insertWordsToTree(vector<string>& words, AVLtree<string>& tree) const
 {
     for (string& w : words)
         tree.insert(w);
 }
 
-void ReportAnalyzer::printVector(const vector<string>& vec)
+void ReportAnalyzer::printVector(const vector<string>& vec) const
 {
     for (const string& s : vec)
         cout << s << endl;
 }
 
-void ReportAnalyzer::removeEmptyFromVector(vector<string>& vec)
+void ReportAnalyzer::removeEmptyFromVector(vector<string>& vec) const
 {
     vector<string> temp;
     for (string& s : vec)
@@ -163,7 +163,7 @@ void ReportAnalyzer::removeEmptyFromVector(vector<string>& vec)
     vec = temp;
 }
 
-int ReportAnalyzer::getWordsNum(tnode<string>*& I)
+int ReportAnalyzer::getWordsNum(tnode<string>*& I) const
 {
     if (I == nullptr)
         return 0;
@@ -171,7 +171,7 @@ int ReportAnalyzer::getWordsNum(tnode<string>*& I)
         return I->count + getWordsNum(I->left) + getWordsNum(I->right);
 }
 
-int ReportAnalyzer::getUniWordsNum(tnode<string>*& I)
+int ReportAnalyzer::getUniWordsNum(tnode<string>*& I) const
 {
     if (I == nullptr)
         return 0;
@@ -179,7 +179,7 @@ int ReportAnalyzer::getUniWordsNum(tnode<string>*& I)
         return 1 + getUniWordsNum(I->left) + getUniWordsNum(I->right);
 }
 
-int ReportAnalyzer::getUniMoreThan3LettersNum(tnode<string>*& I)
+int ReportAnalyzer::getUniMoreThan3LettersNum(tnode<string>*& I) const
 {
     if (I == nullptr)
         return 0;
@@ -189,7 +189,7 @@ int ReportAnalyzer::getUniMoreThan3LettersNum(tnode<string>*& I)
         return 0 + getUniMoreThan3LettersNum(I->left) + getUniMoreThan3LettersNum(I->right);
 }
 
-int ReportAnalyzer::getTotalLenOfWords(tnode<string>*& I)
+int ReportAnalyzer::getTotalLenOfWords(tnode<string>*& I) const
 {
     if (I == nullptr)
         return 0;
@@ -200,7 +200,7 @@ int ReportAnalyzer::getTotalLenOfWords(tnode<string>*& I)
     }
 }
 
-void ReportAnalyzer::getIndexMapOfWords(tnode<string>*& I, unordered_map<char, string>& map)
+void ReportAnalyzer::getIndexMapOfWords(tnode<string>*& I, unordered_map<char, string>& map) const
 {
     if (I == nullptr)
         return;
@@ -214,7 +214,7 @@ void ReportAnalyzer::getIndexMapOfWords(tnode<string>*& I, unordered_map<char, s
     }
 }
 
-int ReportAnalyzer::getMoreThan3LettersNum(tnode<string>*& I)
+int ReportAnalyzer::getMoreThan3LettersNum(tnode<string>*& I) const
 {
     if (I == nullptr)
         return 0;
@@ -224,7 +224,8 @@ int ReportAnalyzer::getMoreThan3LettersNum(tnode<string>*& I)
         return 0 + getMoreThan3LettersNum(I->left) + getMoreThan3LettersNum(I->right);
 }
 
-void ReportAnalyzer::getWordsUsedTooOften(tnode<string>*& I, vector<string>& wordsTooOften, int& moreThan3LetterNum)
+void ReportAnalyzer::getWordsUsedTooOften(tnode<string>*& I, vector<string>& wordsTooOften,
+                                          int& moreThan3LetterNum) const
 {
     if (I == nullptr)
         return;
@@ -239,7 +240,7 @@ void ReportAnalyzer::getWordsUsedTooOften(tnode<string>*& I, vector<string>& wor
 }
 
 string ReportAnalyzer::getStatsSummary(int& wordsNum, int& uniWordsNum, int& uniMoreThan3LettersNum,
-                                       int& avgWordLen, int& avgSentenceLen)
+                                       int& avgWordLen, int& avgSentenceLen) const
 {
     string statsSummary;
 
@@ -247,7 +248,8 @@ string ReportAnalyzer::getStatsSummary(int& wordsNum, int& uniWordsNum, int& uni
     statsSummary = "<*>------ STATISTICAL SUMMARY ------<*>\n\n";
     statsSummary.append("TOTAL NUMBER OF WORDS: " + to_string(wordsNum) + "\n"
                         + "TOTAL NUMBER OF “UNIQUE” WORDS: " + to_string(uniWordsNum) + "\n"
-                        + "TOTAL NUMBER OF “UNIQUE” WORDS OF MORE THAN THREE LETTERS: " + to_string(uniMoreThan3LettersNum) + "\n"
+                        + "TOTAL NUMBER OF “UNIQUE” WORDS OF MORE THAN THREE LETTERS: "
+                        + to_string(uniMoreThan3LettersNum) + "\n"
                         + "AVERAGE WORD LENGTH: " + to_string(avgWordLen) + " characters" + "\n"
                         + "AVERAGE SENTENCE LENGTH: " + to_string(avgSentenceLen) + " words" + "\n");
 
@@ -255,7 +257,7 @@ string ReportAnalyzer::getStatsSummary(int& wordsNum, int& uniWordsNum, int& uni
 }
 
 string ReportAnalyzer::getStyleWarnings(vector<string>& wordsTooOften, bool sentenceTooLong, bool wordTooLong,
-                                      int& avgSentenceLen, int& avgWordLen)
+                                      int& avgSentenceLen, int& avgWordLen) const
 {
     string styleWarnings;                                   // style warnings
 
@@ -283,7 +285,7 @@ string ReportAnalyzer::getStyleWarnings(vector<string>& wordsTooOften, bool sent
     return styleWarnings;
 }
 
-string ReportAnalyzer::getindexUniWords(unordered_map<char, string> indexMap)
+string ReportAnalyzer::getindexUniWords(unordered_map<char, string> indexMap) const
 {
     string indexUniWords;                                   // unique words by index
 
@@ -305,14 +307,14 @@ string ReportAnalyzer::getindexUniWords(unordered_map<char, string> indexMap)
     return indexUniWords;
 }
 
-void ReportAnalyzer::loadContentToFile(string& filePath, string& content)
+void ReportAnalyzer::loadContentToFile(string& filePath, string& content) const
 {
     ofstream file(filePath);                                 // create file if it's not there
     file << content;                                         // write the content into the file
     file.close();                                            // close the file
 }
 
-void ReportAnalyzer::analyzeReport(string fileAddress, string analysisResultPath)
+void ReportAnalyzer::analyzeReport(string fileAddress, string analysisResultPath) const
 {
     /* variables related to the analysis */
     AVLtree<string> T;                                      // a tree for storing words for better searching
