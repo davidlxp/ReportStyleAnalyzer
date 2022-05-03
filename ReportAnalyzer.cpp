@@ -209,8 +209,6 @@ void ReportAnalyzer::getIndexMapOfWords(tnode<string>*& I, unordered_map<char, s
         map[I->info[0]] += (I->info + "\n");
         getIndexMapOfWords(I->left, map);
         getIndexMapOfWords(I->right, map);
-//        if (map.find(I->info[0]) == map.end())
-//            map[I->info[0]] += I->info;
     }
 }
 
