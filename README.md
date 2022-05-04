@@ -26,7 +26,7 @@ Lastly, two sample articles are included in this repository. If you wish to anal
 The `main.cpp` provides a menu driven program to test the `ReportAnalyzer` class. Please run the `main.cpp` and follow the steps promoted to test. 
 If you wish to use your own article, please make sure the article is in `.txt` format and the file is placed in the same folder as `main.cpp`
 
-## To add LargeInt class to your own project
+## To add ReportAnalyzer class to your own project
 Please copy both `ReportAnalyzer.h`, `ReportAnalyzer.cpp` and its dependency files `AVL.h` and `AVL.cpp` to your project. Then include the header file of ReportAnalyzer class into your program by:
 ```
 #include "ReportAnalyzer.h"
