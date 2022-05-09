@@ -38,11 +38,3 @@ unordered_map
 AVL.cpp
 /Users/xinpengliu/Desktop/Code/CSC331H/ReportStyleAnalyzer/AVL.cpp
 
-/Users/xinpengliu/Desktop/Code/CSC331H/ReportStyleAnalyzer/main.cpp
-iostream
--
-vector
--
-ReportAnalyzer.h
-/Users/xinpengliu/Desktop/Code/CSC331H/ReportStyleAnalyzer/ReportAnalyzer.h
-
